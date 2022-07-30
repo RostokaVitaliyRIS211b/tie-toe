@@ -1,8 +1,6 @@
 ﻿using g = SFML.Graphics;
 using w = SFML.Window;
 using s = SFML.System;
-using SFML.System;
-using SFML.Graphics;
 
 namespace Lines
 {
@@ -15,7 +13,7 @@ namespace Lines
         {
 
         }
-        public line(Vector2i point_one, Vector2i point_two, Color color)
+        public line(s.Vector2i point_one, s.Vector2i point_two, g.Color color)
         {
             this.point_one = point_one;
             this.point_two = point_two;

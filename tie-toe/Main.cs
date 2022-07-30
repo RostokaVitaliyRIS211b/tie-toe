@@ -18,9 +18,6 @@ namespace Main
             s.Vector2i mouse_pos = new s.Vector2i();
             List<line> lines = new List<line>();
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
-            g.CircleShape circle = new g.CircleShape(30);
-            circle.FillColor = g.Color.Blue;
-            circle.Position = new s.Vector2f(1000, 700);
             MainWindow.KeyPressed += Window_KeyPressed;
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
             create_lines(width_screen,height_screen,out lines,side_of_cell);
@@ -32,7 +29,6 @@ namespace Main
                 foreach (line line in lines)
                     MainWindow.Draw(line);
                 MainWindow.Display();
-                //Console.WriteLine("GAY");
             }
             Console.ReadKey();
             return 0;

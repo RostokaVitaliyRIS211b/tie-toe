@@ -1,6 +1,4 @@
-﻿using SFML.Graphics;
-using System;
-using g = SFML.Graphics;
+﻿using g = SFML.Graphics;
 
 namespace tie_toe
 {
@@ -14,7 +12,7 @@ namespace tie_toe
         {
             player = 0;
         }
-        public Sigh(Image img)
+        public Sigh(g.Image img)
         {
             player = 0;
             this.img = img;
@@ -24,9 +22,9 @@ namespace tie_toe
         public Sigh(string name)
         {
             player = 0;
-            img = new Image(name);
-            texture = new Texture(img);
-            sprite = new Sprite(texture);
+            img = new g.Image(name);
+            texture = new g.Texture(img);
+            sprite = new g.Sprite(texture);
         }
 
         public void Draw(g.RenderTarget target,g.RenderStates states )

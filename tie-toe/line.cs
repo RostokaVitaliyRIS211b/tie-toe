@@ -1,5 +1,4 @@
-﻿using System;
-using g = SFML.Graphics;
+﻿using g = SFML.Graphics;
 using w = SFML.Window;
 using s = SFML.System;
 namespace Lines

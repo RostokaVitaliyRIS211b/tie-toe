@@ -4,10 +4,10 @@ namespace tie_toe
 {
     internal  class Sigh : g.Drawable
     {
-        g.Image img { get; set; }
-        g.Texture texture { get; set; }
-        g.Sprite sprite { get; set; }
-        int player { get; set; }
+        public g.Image img { get; set; }
+        public g.Texture texture { get; set; }
+        public g.Sprite sprite { get; set; }
+        public int player { get; set; }
         public Sigh()
         {
             player = 0;

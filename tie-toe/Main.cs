@@ -10,14 +10,17 @@ namespace Main
     {
         public static int Main()
         {
-            int rank = 3;
-            g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode(1280, 720), "Tie-Toe");
+            int rank = 3, width_screen=600,height_screen=600;
+            int side_of_cell = width_screen / rank;
+            s.Vector2i mouse_pos = new s.Vector2i();
+            g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             g.CircleShape circle = new g.CircleShape(30);
             circle.FillColor = g.Color.Blue;
             circle.Position = new s.Vector2f(1000, 700);
             MainWindow.KeyPressed += Window_KeyPressed;
             while (MainWindow.IsOpen)
             {
+                mouse_pos=w.Mouse.GetPosition(MainWindow);
                 MainWindow.Clear(g.Color.White);
                 MainWindow.DispatchEvents();
                 MainWindow.Display();

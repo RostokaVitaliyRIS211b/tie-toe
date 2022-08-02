@@ -1,5 +1,6 @@
 ﻿using g = SFML.Graphics;
-
+using s = SFML.System;
+using System.Collections.Generic;
 namespace tie_toe
 {
     internal  class Sigh : g.Drawable
@@ -11,6 +12,13 @@ namespace tie_toe
         public Sigh()
         {
             player = 0;
+        }
+        public Sigh(ref Sigh sigh)
+        {
+            img = sigh.img;
+            texture = sigh.texture;
+            sprite = sigh.sprite;
+            player = sigh.player;
         }
         public Sigh(g.Image img)
         {
@@ -26,7 +34,18 @@ namespace tie_toe
             texture = new g.Texture(img);
             sprite = new g.Sprite(texture);
         }
-
+        public s.Vector2f get_pos()
+        {
+            return sprite.Position;
+        }
+        public void set_pos(float x,float y)
+        {
+            sprite.Position = new s.Vector2f(x, y);
+        }
+        public void set_pos(s.Vector2f vec)
+        {
+            sprite.Position = vec;
+        }
         public void Draw(g.RenderTarget target,g.RenderStates states )
         {
             states = g.RenderStates.Default;

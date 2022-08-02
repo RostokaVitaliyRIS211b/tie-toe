@@ -9,13 +9,12 @@ using s = SFML.System;
 using System.Threading;
 namespace Main
 {
-    class Program
+    public class Program
     {
-        static List<Sigh> sighs =new List<Sigh>();
-        static int rank = 3, width_screen = 600, height_screen = 600, count_of_win = 3;
+        public static List<Sigh> sighs =new List<Sigh>();
+        static int rank = 3, width_screen = 600, height_screen = 600, count_of_win = 3,player_win=0;
         static int side_of_cell = width_screen / rank;
-        static int player = 1;
-        
+        public static int player = 1;     
         public static int Main()
         {
             
@@ -34,8 +33,9 @@ namespace Main
                 foreach (line line in lines)
                     MainWindow.Draw(line);
                 MainWindow.Display();
-                if(sighs.Count==9 | is_win()!=0)
+                if(sighs.Count==rank*rank | player_win!=0)
                 {
+                    Console.WriteLine("gay");
                     Thread.Sleep(1000);
                     sighs.Clear();
                 }
@@ -81,15 +81,15 @@ namespace Main
                 sigh.texture = new g.Texture(sigh.img);
                 sigh.sprite = new g.Sprite(sigh.texture)
                 {
-                    Position = new s.Vector2f((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell),
                     Scale = new s.Vector2f(side_of_cell / 200, side_of_cell / 200)
                 };
+                sigh.set_pos(new s.Vector2f((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell));
                 sighs.Add(sigh);
                 ++player;
                 if (player == 3)
                     player = 1;
            }
-          
+            player_win = is_win();
         }
         private static void Window_KeyPressed(object sender, SFML.Window.KeyEventArgs e)
         {
@@ -99,7 +99,7 @@ namespace Main
                 window.Close();
             }
         }
-        private delegate void win_player(Sigh sighc, out int player);
+        private delegate void win_player(Sigh sighc, ref int player);
         private static int is_win()
         {
             win_player a = new win_player(compare1);
@@ -107,69 +107,83 @@ namespace Main
             a += compare3;
             a += compare4;
             int player = 0;
-            foreach(Sigh sigh in sighs)
+           
+            foreach (Sigh sigh in sighs)
+                Console.WriteLine("position before {0}",sigh.sprite.Position);
+            
+            foreach (Sigh sigh in sighs)
             {
-                a(sigh, out player);
+                a(sigh, ref player);
                 if (player != 0)
                     break;
             }
+
+            foreach (Sigh sigh in sighs)
+                Console.WriteLine("position after {0}", sigh.sprite.Position);
             return player;
         }
-        private static void compare1(Sigh sighc, out int player)
+        private static void compare1(Sigh sighc, ref int player)
         {
-            player = 0;
             int count_of_finds = 0, difference = side_of_cell;
-            Sigh sigh = sighc;
-            for(int i=0;i<count_of_win;++i)
+            s.Vector2f pos = new s.Vector2f();
+            pos = sighc.position;
+            for (int i=0;i<count_of_win;++i)
             {
-                sigh.set_pos(sigh.get_pos().X + difference, sigh.get_pos().Y - difference);
-                if (sighs.Contains(sigh))
+                pos.X += difference;
+                pos.Y -= difference;
+                if (sighs.Find(sigh => sigh.position == pos) != null)
                     ++count_of_finds;
             }
             if (count_of_finds == count_of_win)
-                player = sigh.player;
+                player = sighc.player;
+
+            //Console.WriteLine("compare1 {0}" , player);
         }
-        private static void compare2(Sigh sighc, out int player)
-        {
-            player = 0;
+        private static void compare2(Sigh sighc, ref int player)
+        { 
             int count_of_finds = 0, difference = side_of_cell;
-            Sigh sigh = sighc;
+            s.Vector2f pos = new s.Vector2f();
+            pos = sighc.position;
             for (int i = 0; i < count_of_win; ++i)
             {
-                sigh.set_pos(sigh.get_pos().X, sigh.get_pos().Y - difference);
-                if (sighs.Contains(sigh))
+                pos.Y -= difference;
+                if (sighs.Find(sigh => sigh.position == pos) != null)
                     ++count_of_finds;
             }
             if (count_of_finds == count_of_win)
-                player = sigh.player;
+                player = sighc.player;
+            //Console.WriteLine("compare2 {0}", player);
         }
-        private static void compare3(Sigh sighc, out int player)
+        private static void compare3(Sigh sighc, ref int player)
         {
-            player = 0;
             int count_of_finds = 0, difference = side_of_cell;
-            Sigh sigh = sighc;
+            s.Vector2f pos = new s.Vector2f();
+            pos = sighc.position;
             for (int i = 0; i < count_of_win; ++i)
             {
-                sigh.set_pos(sigh.get_pos().X-difference, sigh.get_pos().Y - difference);
-                if (sighs.Contains(sigh))
+                pos.X -= difference;
+                pos.Y -= difference;
+                if (sighs.Find(sigh => sigh.position == pos) != null)
                     ++count_of_finds;
             }
             if (count_of_finds == count_of_win)
-                player = sigh.player;
+                player = sighc.player;
+            //Console.WriteLine("compare3 {0}", player);
         }
-        private static void compare4(Sigh sighc, out int player)
+        private static void compare4(Sigh sighc, ref int player)
         {
-            player = 0;
             int count_of_finds = 0, difference = side_of_cell;
-            Sigh sigh = sighc;
+            s.Vector2f pos = new s.Vector2f();
+            pos = sighc.position;
             for (int i = 0; i < count_of_win; ++i)
             {
-                sigh.set_pos(sigh.get_pos().X - difference, sigh.get_pos().Y);
-                if (sighs.Contains(sigh))
+                pos.X -= difference;
+                if (sighs.Find(sigh => sigh.position == pos) != null)
                     ++count_of_finds;
             }
             if (count_of_finds == count_of_win)
-                player = sigh.player;
+                player = sighc.player;
+            //Console.WriteLine("compare4 {0}", player);
         }
 
 

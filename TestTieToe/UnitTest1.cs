@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Main;
 namespace TestTieToe
 {
     [TestClass]
@@ -7,7 +8,8 @@ namespace TestTieToe
         [TestMethod]
         public void TestMethod1()
         {
-            
+            int player = 1;
+            Program program = new Program();
         }
     }
 }

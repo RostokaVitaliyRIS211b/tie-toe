@@ -3,12 +3,14 @@ using s = SFML.System;
 using System.Collections.Generic;
 namespace tie_toe
 {
-    internal  class Sigh : g.Drawable
+    public  class Sigh : g.Drawable
     {
         public g.Image img { get; set; }
         public g.Texture texture { get; set; }
         public g.Sprite sprite { get; set; }
         public int player { get; set; }
+
+        public s.Vector2f position;
         public Sigh()
         {
             player = 0;
@@ -41,6 +43,7 @@ namespace tie_toe
         public void set_pos(float x,float y)
         {
             sprite.Position = new s.Vector2f(x, y);
+            position = sprite.Position;
         }
         public void set_pos(s.Vector2f vec)
         {

@@ -12,7 +12,7 @@ namespace Main
     public class Program
     {
         public static List<Sigh> sighs =new List<Sigh>();
-        static int rank = 3, width_screen = 600, height_screen = 600, count_of_win = 3,player_win=0;
+        static int rank = 10, width_screen = 600, height_screen = 600, count_of_win = 5,player_win=0;
         static int side_of_cell = width_screen / rank;
         public static int player = 1;     
         public static int Main()
@@ -72,7 +72,7 @@ namespace Main
         private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)
         { 
            var window = (SFML.Window.Window)sender;
-           if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X/side_of_cell>=0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0)
+           if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X/side_of_cell>=0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0 & sighs.Find(sigh => (s.Vector2i)sigh.sprite.Position== new s.Vector2i((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell)) ==null)
            {
               Sigh sigh = new Sigh();
               sigh.player = player;
@@ -83,13 +83,14 @@ namespace Main
                 sigh.texture = new g.Texture(sigh.img);
                 sigh.sprite = new g.Sprite(sigh.texture)
                 {
-                    Scale = new s.Vector2f(side_of_cell / 200, side_of_cell / 200)
+                    Scale = new s.Vector2f(side_of_cell / 200f, side_of_cell / 200f)
                 };
                 sigh.set_pos(new s.Vector2f((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell));
                 sighs.Add(sigh);
                 ++player;
                 if (player == 3)
-                    player = 1;
+                    player = 1;  /*Console.WriteLine(sigh.sprite.Scale);*/
+              
            }
             player_win = is_win();
         }

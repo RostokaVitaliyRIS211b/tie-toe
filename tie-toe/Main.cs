@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using tie_toe;
 using Lines;
+using Text;
 using g = SFML.Graphics;
 using a = SFML.Audio;
 using w = SFML.Window;
@@ -11,7 +12,7 @@ namespace Main
 {
     public class Program
     {
-        public static List<Sigh> sighs =new List<Sigh>();
+        public static List<Sigh> sighs = new List<Sigh>();
         static int rank = 10, width_screen = 600, height_screen = 600, count_of_win = 5,player_win=0;
         static int side_of_cell = width_screen / rank;
         public static int player = 1;     
@@ -20,27 +21,50 @@ namespace Main
             
             //s.Vector2i mouse_pos = new s.Vector2i();
             List<line> lines = new List<line>();
+            List<Textbox> textboxes = new List<Textbox>();
+            Textbox textbox = new Textbox();
+            textbox.set_size_text(30);
+            textbox.set_string("START");
+            textbox.set_color_text(g.Color.Black);
+            textbox.set_outline_color_rect(g.Color.Black);
+            textbox.set_outline_thickness_rect(2);
+            textbox.set_Fill_color_rect(new g.Color(0,162,232));
+            textbox.set_size_rect(new s.Vector2f(100, 60));
+            textbox.set_pos(300, 300);
+            textboxes.Add(textbox);
+            bool menu = true;
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             MainWindow.KeyPressed += Window_KeyPressed;
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
             create_lines(width_screen,height_screen,out lines,side_of_cell);
             while (MainWindow.IsOpen)
             {
-               
-                MainWindow.Clear(g.Color.White);
-                MainWindow.DispatchEvents();
-                foreach (Sigh sigh in sighs)
-                    MainWindow.Draw(sigh);
-                foreach (line line in lines)
-                    MainWindow.Draw(line);
-                MainWindow.Display();
-                if (sighs.Count == rank * rank | player_win != 0)
+                if (menu)
                 {
-                    Thread.Sleep(1500);
-                    Console.WriteLine("gay");
-                    sighs.Clear();
-                    player_win = 0;
+                    MainWindow.Clear(g.Color.White);
+                    MainWindow.DispatchEvents();
+                    foreach (Textbox textbox1 in textboxes)
+                        MainWindow.Draw(textbox1);
+                    MainWindow.Display();
                 }
+                else
+                {
+                    MainWindow.Clear(g.Color.White);
+                    MainWindow.DispatchEvents();
+                    foreach (Sigh sigh in sighs)
+                        MainWindow.Draw(sigh);
+                    foreach (line line in lines)
+                        MainWindow.Draw(line);
+                    MainWindow.Display();
+                    if (sighs.Count == rank * rank | player_win != 0)
+                    {
+                        Thread.Sleep(1500);
+                        Console.WriteLine("gay");
+                        sighs.Clear();
+                        player_win = 0;
+                    }
+                }
+               
             }
             Console.ReadKey();
             return 0;

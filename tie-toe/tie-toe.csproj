@@ -59,6 +59,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Textbox.cs" />
     <Compile Include="line.cs" />
     <Compile Include="tie-toe.cs" />
     <Compile Include="Main.cs" />

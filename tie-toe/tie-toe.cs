@@ -9,8 +9,6 @@ namespace tie_toe
         public g.Texture texture { get; set; }
         public g.Sprite sprite { get; set; }
         public int player { get; set; }
-
-        public s.Vector2f position;
         public Sigh()
         {
             player = 0;
@@ -43,7 +41,6 @@ namespace tie_toe
         public void set_pos(float x,float y)
         {
             sprite.Position = new s.Vector2f(x, y);
-            position = sprite.Position;
         }
         public void set_pos(s.Vector2f vec)
         {

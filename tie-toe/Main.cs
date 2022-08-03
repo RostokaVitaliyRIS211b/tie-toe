@@ -13,6 +13,7 @@ namespace Main
     public class Program
     {
         public static List<Sigh> sighs = new List<Sigh>();
+        public static List<Textbox> textboxes = new List<Textbox>();
         static int rank = 10, width_screen = 600, height_screen = 600, count_of_win = 5,player_win=0;
         static int side_of_cell = width_screen / rank;
         public static int player = 1;     
@@ -21,7 +22,6 @@ namespace Main
             
             //s.Vector2i mouse_pos = new s.Vector2i();
             List<line> lines = new List<line>();
-            List<Textbox> textboxes = new List<Textbox>();
             Textbox textbox = new Textbox();
             textbox.set_size_text(30);
             textbox.set_string("START");

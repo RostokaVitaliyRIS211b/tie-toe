@@ -3,7 +3,7 @@ using s = SFML.System;
 using sus = System;
 namespace Text
 {
-    internal class Textbox: g.Drawable
+    public class Textbox: g.Drawable
     {
         protected g.RectangleShape rect;
         protected g.Text text;
@@ -44,20 +44,21 @@ namespace Text
         }
         public void set_pos(float x, float y)
         {
-            sus.Console.WriteLine("rect {0}", rect.Origin);
-            sus.Console.WriteLine("text {0}", text.Origin);
+            //sus.Console.WriteLine("rect {0} {1}", rect.Origin, rect.Size);
+           
             rect.Position = new s.Vector2f(x, y);
             text.Position = new s.Vector2f(x, y);
+            sus.Console.WriteLine("text {0} {1} {2}", text.Origin, text.GetGlobalBounds().Top, text.GetLocalBounds().Top);
         }
         public void set_size_text(int size)
         {
             text.CharacterSize = (uint)size;
-            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width/2f,text.GetGlobalBounds().Height/2f);
+            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width/2f,text.GetGlobalBounds().Height/2f+3);
         }
         public void set_string(string str)
         {
             text.DisplayedString = str;
-            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f);
+            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f+3);
         }
         public void Draw(g.RenderTarget target, g.RenderStates states)
         {

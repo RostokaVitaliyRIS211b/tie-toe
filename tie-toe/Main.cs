@@ -14,7 +14,7 @@ namespace Main
     {
         public static List<Sigh> sighs = new List<Sigh>();
         public static List<Textbox> textboxes = new List<Textbox>();
-        static int rank = 10/*размер стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
+        static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
         public static bool menu = true;

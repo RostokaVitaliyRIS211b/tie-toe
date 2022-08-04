@@ -219,7 +219,7 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();// позиция искомого знака
             pos = sighc.sprite.Position;
-            for (int i=0;i<count_of_win;++i)
+            for (int i=0;i<count_of_win & player == 0;++i)
             {
                 if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)// ищем знаки распологающийся сверху справа по диагонали от текущего знака(крестика или нолика)
                     ++count_of_finds;
@@ -236,7 +236,7 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win; ++i)
+            for (int i = 0; i < count_of_win & player == 0; ++i)
             {
                 if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player==sighc.player) != null)
                     ++count_of_finds;
@@ -251,7 +251,7 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win; ++i)
+            for (int i = 0; i < count_of_win & player == 0; ++i)
             {
                 if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)
                     ++count_of_finds;
@@ -267,7 +267,7 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win; ++i)
+            for (int i = 0; i < count_of_win & player == 0; ++i)
             {
                 if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)
                     ++count_of_finds;

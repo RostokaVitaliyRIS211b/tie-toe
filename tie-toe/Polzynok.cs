@@ -1,6 +1,6 @@
 ﻿using g = SFML.Graphics;
 using s = SFML.System;
-using sus = System;
+using sus=System;
 namespace Polzet
 {
     public class HPolzynok:g.Drawable
@@ -12,6 +12,13 @@ namespace Polzet
         protected g.CircleShape end2;
         protected g.CircleShape active;
         protected int value;
+        protected delegate float coord(float x);
+        protected coord mvf;
+        protected float standart_func(float x)
+        {
+            return x >= rect.Position.X-rect.Size.X/2 & x <= rect.Position.X+rect.Size.X/2 ? x : rect.Position.X - rect.Size.X / 2;
+        }
+
         public HPolzynok()
         {
             rect = new g.RectangleShape();
@@ -20,6 +27,7 @@ namespace Polzet
             p = new g.RectangleShape();
             p1 = new g.RectangleShape();
             active = new g.CircleShape();
+            mvf += standart_func;
             value = 0;
         }
         public void set_Fill_color_rect(g.Color color)
@@ -87,6 +95,15 @@ namespace Polzet
         public int get_value()
         {
             return value;
+        }
+        public void change_func(sus.Func<float,float> func)
+        {
+            mvf = new coord(func);
+            //sus.Console.WriteLine("Length {0}", mvf.GetInvocationList().Length);
+        }
+        public void move(float x)
+        {
+           
         }
         public void Draw(g.RenderTarget target, g.RenderStates states)
         {

@@ -102,6 +102,10 @@ namespace Main
             //Console.ReadKey();
             return 0;
         }
+        private static float test(float x)
+        {
+            return x;
+        }
         private static void create_lines(int width_screen, int height_screen,out List<line> lines,int side_of_cell)
         {
             lines=new List<line>();
@@ -129,19 +133,29 @@ namespace Main
         private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)// обработка событий мыши
         { 
            var window = (SFML.Window.Window)sender;
-            if(menu)
+            if(menu & e.Button==w.Mouse.Button.Left)
             {
-                foreach(Textbox textbox in textboxes)
+                if(!settings)
                 {
-                    if(textbox.contains(w.Mouse.GetPosition(window)))
+                    foreach (Textbox textbox in textboxes)
                     {
-                        if (textbox.get_string() == "START")
-                            menu = false;
-                        if(textbox.get_string() == "EXIT")
-                            window.Close();
-                        break;
+                        if (textbox.contains(w.Mouse.GetPosition(window)))
+                        {
+                            if (textbox.get_string() == "START")
+                                menu = false;
+                            if (textbox.get_string() == "EXIT")
+                                window.Close();
+                            break;
+                        }
                     }
+
                 }
+                else
+                {
+                    foreach (HPolzynok polzynok in polzynoks)
+                        polzynok.change_func(test);
+                }
+               
             }
             else
             {

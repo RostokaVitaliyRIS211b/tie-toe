@@ -1,6 +1,6 @@
 ﻿using g = SFML.Graphics;
 using s = SFML.System;
-using System.Collections.Generic;
+using sus = System;
 namespace tie_toe
 {
     public  class Sigh : g.Drawable
@@ -51,6 +51,10 @@ namespace tie_toe
             states = g.RenderStates.Default;
             target.Draw(sprite, states);
         }
+        //public override string ToString()
+        //{
+        //    return base.ToString();
+        //}
     }
 
 }

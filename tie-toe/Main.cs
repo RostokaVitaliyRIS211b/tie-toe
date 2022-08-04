@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using tie_toe;
 using Lines;
 using Text;
+using Polzet;
 using g = SFML.Graphics;
 using a = SFML.Audio;
 using w = SFML.Window;
@@ -14,10 +15,11 @@ namespace Main
     {
         public static List<Sigh> sighs = new List<Sigh>();
         public static List<Textbox> textboxes = new List<Textbox>();
+        public static List<HPolzynok> polzynoks = new List<HPolzynok>();
         static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
-        public static bool menu = true;
+        public static bool menu = true,settings=true;
         public static int Main()
         {
             
@@ -47,30 +49,44 @@ namespace Main
             textboxes.Add(textbox2);
             textboxes.Add(textbox3);
             textboxes.Add(textbox4);
-           
+            HPolzynok pol = new HPolzynok();
+            pol.set_Fill_color_rect(new g.Color(0, 162, 232));
+            pol.set_Outline_color_rect(g.Color.Black);
+            pol.set_rect_outline_thickness(2);
+            pol.set_size_rect(200, 20);
+            pol.set_pos_polz(300, 300);
+            pol.set_rad_act(20);
+            pol.set_Fillcolor_act(new g.Color(0, 162, 232));
+            pol.set_Outline_thickness_act(2);
+            pol.set_outline_color_act(g.Color.Black);
+            polzynoks.Add(pol);
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             MainWindow.KeyPressed += Window_KeyPressed;// запрягаем делегатов
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
             create_lines(width_screen,height_screen,out lines,side_of_cell);
             while (MainWindow.IsOpen)
             {
+                MainWindow.Clear(g.Color.White);
+                MainWindow.DispatchEvents();
                 if (menu)
                 {
-                    MainWindow.Clear(g.Color.White);
-                    MainWindow.DispatchEvents();
-                    foreach (Textbox textbox1 in textboxes)
-                        MainWindow.Draw(textbox1);
-                    MainWindow.Display();
+                    if(!settings)
+                    {
+                        foreach (Textbox textbox1 in textboxes)
+                            MainWindow.Draw(textbox1);
+                    }
+                    else
+                    {
+                        foreach (HPolzynok polzynok in polzynoks)
+                            MainWindow.Draw(polzynok);
+                    }
                 }
                 else
                 {
-                    MainWindow.Clear(g.Color.White);
-                    MainWindow.DispatchEvents();
                     foreach (Sigh sigh in sighs)
                         MainWindow.Draw(sigh);
                     foreach (line line in lines)
                         MainWindow.Draw(line);
-                    MainWindow.Display();
                     if (sighs.Count == rank * rank | player_win != 0)
                     {
                         Thread.Sleep(1500);
@@ -80,7 +96,8 @@ namespace Main
                         menu = true;
                     }
                 }
-               
+                MainWindow.Display();
+
             }
             //Console.ReadKey();
             return 0;

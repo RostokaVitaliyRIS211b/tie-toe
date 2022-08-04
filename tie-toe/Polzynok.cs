@@ -98,7 +98,7 @@ namespace Polzet
         }
         public void change_func(sus.Func<float,float> func)
         {
-            mvf = new coord(func);
+            mvf = new coord(func);//очищаем делегат от всех прочих функций и заносим одну новую
             //sus.Console.WriteLine("Length {0}", mvf.GetInvocationList().Length);
         }
         public void move(float x)

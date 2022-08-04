@@ -8,6 +8,7 @@ using g = SFML.Graphics;
 using a = SFML.Audio;
 using w = SFML.Window;
 using s = SFML.System;
+using sus = System;
 using System.Threading;
 namespace Main
 {
@@ -19,7 +20,7 @@ namespace Main
         static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
-        public static bool menu = true,settings=true;
+        public static bool menu = false,settings=true;
         public static int Main()
         {
             
@@ -66,11 +67,12 @@ namespace Main
             create_lines(width_screen,height_screen,out lines,side_of_cell);
             while (MainWindow.IsOpen)
             {
-                MainWindow.Clear(g.Color.White);
-                MainWindow.DispatchEvents();
+                
                 if (menu)
                 {
-                    if(!settings)
+                    MainWindow.Clear(g.Color.White);
+                    MainWindow.DispatchEvents();
+                    if (!settings)
                     {
                         foreach (Textbox textbox1 in textboxes)
                             MainWindow.Draw(textbox1);
@@ -80,23 +82,28 @@ namespace Main
                         foreach (HPolzynok polzynok in polzynoks)
                             MainWindow.Draw(polzynok);
                     }
+                    MainWindow.Display();
                 }
                 else
                 {
+                    MainWindow.Clear(g.Color.White);
+                    MainWindow.DispatchEvents();
                     foreach (Sigh sigh in sighs)
                         MainWindow.Draw(sigh);
                     foreach (line line in lines)
                         MainWindow.Draw(line);
+                    MainWindow.Display();
                     if (sighs.Count == rank * rank | player_win != 0)
                     {
                         Thread.Sleep(1500);
-                        //Console.WriteLine("gay");
+                        //sus.Console.WriteLine("gay");
                         sighs.Clear();
                         player_win = 0;
-                        menu = true;
+                        //menu = true;
                     }
+                  
                 }
-                MainWindow.Display();
+               
 
             }
             //Console.ReadKey();

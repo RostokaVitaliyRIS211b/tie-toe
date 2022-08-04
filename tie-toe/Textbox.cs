@@ -49,7 +49,7 @@ namespace Text
             text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f+text.CharacterSize/6f);// магические числа на
             rect.Position = new s.Vector2f(x, y);
             text.Position = new s.Vector2f(x, y);
-            sus.Console.WriteLine("text {0} {1} {2}", text.Origin, text.GetGlobalBounds().Width, text.GetGlobalBounds().Top);
+            //sus.Console.WriteLine("text {0} {1} {2}", text.Origin, text.GetGlobalBounds().Width, text.GetGlobalBounds().Top);
         }
         public void set_size_text(int size)
         {

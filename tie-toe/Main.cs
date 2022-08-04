@@ -14,8 +14,8 @@ namespace Main
     {
         public static List<Sigh> sighs = new List<Sigh>();
         public static List<Textbox> textboxes = new List<Textbox>();
-        static int rank = 10, width_screen = 600, height_screen = 600, count_of_win = 5,player_win=0;
-        static int side_of_cell = width_screen / rank;
+        static int rank = 10/*размер стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
+        static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;     
         public static int Main()
         {
@@ -23,18 +23,18 @@ namespace Main
             //s.Vector2i mouse_pos = new s.Vector2i();
             List<line> lines = new List<line>();
             Textbox textbox = new Textbox();
-            textbox.set_size_text(30);
+            textbox.set_size_text(32);
             textbox.set_string("START");
             textbox.set_color_text(g.Color.Black);
             textbox.set_outline_color_rect(g.Color.Black);
             textbox.set_outline_thickness_rect(2);
             textbox.set_Fill_color_rect(new g.Color(0,162,232));
-            textbox.set_size_rect(new s.Vector2f(100, 60));
+            textbox.set_size_rect(new s.Vector2f(150, 60));
             textbox.set_pos(300, 300);
             textboxes.Add(textbox);
             bool menu = true;
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
-            MainWindow.KeyPressed += Window_KeyPressed;
+            MainWindow.KeyPressed += Window_KeyPressed;// запрягаем делегатов
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
             create_lines(width_screen,height_screen,out lines,side_of_cell);
             while (MainWindow.IsOpen)
@@ -93,10 +93,10 @@ namespace Main
                 lines.Add(line1);
             }
         }
-        private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)
+        private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)// обработка событий мыши
         { 
            var window = (SFML.Window.Window)sender;
-           if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X/side_of_cell>=0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0 & sighs.Find(sigh => (s.Vector2i)sigh.sprite.Position== new s.Vector2i((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell)) ==null)
+           if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X/side_of_cell>=0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0 & sighs.Find(sigh => (s.Vector2i)sigh.sprite.Position== new s.Vector2i((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell)) ==null)// если игрок кликнул на пустую не занятую клетку
            {
               Sigh sigh = new Sigh();
               sigh.player = player;
@@ -118,7 +118,7 @@ namespace Main
            }
             player_win = is_win();
         }
-        private static void Window_KeyPressed(object sender, SFML.Window.KeyEventArgs e)
+        private static void Window_KeyPressed(object sender, SFML.Window.KeyEventArgs e)// обработка событий клавиатуры
         {
             var window = (SFML.Window.Window)sender;
             if (e.Code == SFML.Window.Keyboard.Key.Escape)
@@ -127,9 +127,9 @@ namespace Main
             }
         }
         private delegate void win_player(Sigh sighc, ref int player);
-        private static int is_win()
+        private static int is_win()// проверка выиграл ли ктото из игроков
         {
-            win_player a = new win_player(compare1);
+            win_player a = new win_player(compare1);// зарпрягаем делегат
             a += compare2;
             a += compare3;
             a += compare4;
@@ -139,7 +139,7 @@ namespace Main
             //    if(sigh.player==1)
             //        Console.WriteLine("position {0}", sigh.sprite.Position);
             
-            foreach (Sigh sigh in sighs)
+            foreach (Sigh sigh in sighs)// для каждого из существующих знаков проверяем не состоит ли этот знак в ряде с количеством знаков count_of_win
             {
                 a(sigh, ref player);
                 if (player != 0)
@@ -153,11 +153,11 @@ namespace Main
         private static void compare1(Sigh sighc, ref int player)
         {
             int count_of_finds = 0, difference = side_of_cell;
-            s.Vector2f pos = new s.Vector2f();
+            s.Vector2f pos = new s.Vector2f();// позиция искомого знака
             pos = sighc.sprite.Position;
             for (int i=0;i<count_of_win;++i)
             {
-                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)
+                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)// ищем знаки распологающийся сверху справа по диагонали от текущего знака(крестика или нолика)
                     ++count_of_finds;
                 pos.X += difference;
                 pos.Y -= difference;
@@ -167,7 +167,7 @@ namespace Main
             //Console.WriteLine("compare1 {0}", count_of_finds);
 
         }
-        private static void compare2(Sigh sighc, ref int player)
+        private static void compare2(Sigh sighc, ref int player)// ищем знаки сверху текущего
         { 
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
@@ -182,7 +182,7 @@ namespace Main
                 player = sighc.player;
             //Console.WriteLine("compare2 {0}", player);
         }
-        private static void compare3(Sigh sighc, ref int player)
+        private static void compare3(Sigh sighc, ref int player)// ищем знаки слева сверху по диагонали
         {
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
@@ -198,7 +198,7 @@ namespace Main
                 player = sighc.player;
             //Console.WriteLine("compare3 {0}", player);
         }
-        private static void compare4(Sigh sighc, ref int player)
+        private static void compare4(Sigh sighc, ref int player)// ищем знаки слева от текущего
         {
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();

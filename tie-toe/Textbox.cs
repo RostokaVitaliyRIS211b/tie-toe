@@ -12,6 +12,7 @@ namespace Text
         { 
             rect = new g.RectangleShape();
             text = new g.Text();
+            text.OutlineThickness = 0;
             font = new g.Font("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/ofont.ru_Impact.ttf"); text.Font = font; 
         }
         public Textbox(g.RectangleShape rect, g.Text text, g.Font font)
@@ -45,20 +46,19 @@ namespace Text
         public void set_pos(float x, float y)
         {
             //sus.Console.WriteLine("rect {0} {1}", rect.Origin, rect.Size);
-           
+            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f+text.CharacterSize/6f);// магические числа на
             rect.Position = new s.Vector2f(x, y);
             text.Position = new s.Vector2f(x, y);
-            sus.Console.WriteLine("text {0} {1} {2}", text.Origin, text.GetGlobalBounds().Top, text.GetLocalBounds().Top);
+            sus.Console.WriteLine("text {0} {1} {2}", text.Origin, text.GetGlobalBounds().Width, text.GetGlobalBounds().Top);
         }
         public void set_size_text(int size)
         {
             text.CharacterSize = (uint)size;
-            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width/2f,text.GetGlobalBounds().Height/2f+3);
+          
         }
         public void set_string(string str)
         {
             text.DisplayedString = str;
-            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f+3);
         }
         public void Draw(g.RenderTarget target, g.RenderStates states)
         {

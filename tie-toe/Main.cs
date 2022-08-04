@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System;
 using System.Collections.Generic;
 using tie_toe;
 using Lines;
@@ -16,7 +16,8 @@ namespace Main
         public static List<Textbox> textboxes = new List<Textbox>();
         static int rank = 10/*размер стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
-        public static int player = 1;     
+        public static int player = 1;
+        public static bool menu = true;
         public static int Main()
         {
             
@@ -30,9 +31,23 @@ namespace Main
             textbox.set_outline_thickness_rect(2);
             textbox.set_Fill_color_rect(new g.Color(0,162,232));
             textbox.set_size_rect(new s.Vector2f(150, 60));
-            textbox.set_pos(300, 300);
+            textbox.set_pos(300, 200);
+            Textbox textbox2 = new Textbox(ref textbox);
+            textbox2.set_string("SETTINGS");
+            textbox2.set_pos(300, 300);
+            Textbox textbox3 = new Textbox(ref textbox);
+            textbox3.set_string("EXIT");
+            textbox3.set_pos(300,400);
+            Textbox textbox4 = new Textbox();
+            textbox4.set_size_text(48);
+            textbox4.set_color_text(g.Color.Black);
+            textbox4.set_string("Tie-toe");
+            textbox4.set_pos(300, 100);
             textboxes.Add(textbox);
-            bool menu = true;
+            textboxes.Add(textbox2);
+            textboxes.Add(textbox3);
+            textboxes.Add(textbox4);
+           
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             MainWindow.KeyPressed += Window_KeyPressed;// запрягаем делегатов
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
@@ -59,14 +74,15 @@ namespace Main
                     if (sighs.Count == rank * rank | player_win != 0)
                     {
                         Thread.Sleep(1500);
-                        Console.WriteLine("gay");
+                        //Console.WriteLine("gay");
                         sighs.Clear();
                         player_win = 0;
+                        menu = true;
                     }
                 }
                
             }
-            Console.ReadKey();
+            //Console.ReadKey();
             return 0;
         }
         private static void create_lines(int width_screen, int height_screen,out List<line> lines,int side_of_cell)
@@ -96,27 +112,44 @@ namespace Main
         private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)// обработка событий мыши
         { 
            var window = (SFML.Window.Window)sender;
-           if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X/side_of_cell>=0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0 & sighs.Find(sigh => (s.Vector2i)sigh.sprite.Position== new s.Vector2i((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell)) ==null)// если игрок кликнул на пустую не занятую клетку
-           {
-              Sigh sigh = new Sigh();
-              sigh.player = player;
-              if (player==1)
-                sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/cross.png");
-              else
-                sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/circle.png");
-                sigh.texture = new g.Texture(sigh.img);
-                sigh.sprite = new g.Sprite(sigh.texture)
+            if(menu)
+            {
+                foreach(Textbox textbox in textboxes)
                 {
-                    Scale = new s.Vector2f(side_of_cell / 200f, side_of_cell / 200f)
-                };
-                sigh.set_pos(new s.Vector2f((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell));
-                sighs.Add(sigh);
-                ++player;
-                if (player == 3)
-                    player = 1;  /*Console.WriteLine(sigh.sprite.Scale);*/
-              
-           }
-            player_win = is_win();
+                    if(textbox.contains(w.Mouse.GetPosition(window)))
+                    {
+                        if (textbox.get_string() == "START")
+                            menu = false;
+                        if(textbox.get_string() == "EXIT")
+                            window.Close();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (e.Button == w.Mouse.Button.Left & w.Mouse.GetPosition(window).X / side_of_cell >= 0 & w.Mouse.GetPosition(window).Y / side_of_cell >= 0 & sighs.Find(sigh => (s.Vector2i)sigh.sprite.Position == new s.Vector2i((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell)) == null)// если игрок кликнул на пустую не занятую клетку
+                {
+                    Sigh sigh = new Sigh();
+                    sigh.player = player;
+                    if (player == 1)
+                        sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/cross.png");
+                    else
+                        sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/circle.png");
+                    sigh.texture = new g.Texture(sigh.img);
+                    sigh.sprite = new g.Sprite(sigh.texture)
+                    {
+                        Scale = new s.Vector2f(side_of_cell / 200f, side_of_cell / 200f)
+                    };
+                    sigh.set_pos(new s.Vector2f((w.Mouse.GetPosition(window).X / side_of_cell) * side_of_cell, (w.Mouse.GetPosition(window).Y / side_of_cell) * side_of_cell));
+                    sighs.Add(sigh);
+                    ++player;
+                    if (player == 3)
+                        player = 1;  /*Console.WriteLine(sigh.sprite.Scale);*/
+
+                }
+                player_win = is_win();
+            }
         }
         private static void Window_KeyPressed(object sender, SFML.Window.KeyEventArgs e)// обработка событий клавиатуры
         {

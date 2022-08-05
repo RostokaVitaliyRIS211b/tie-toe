@@ -8,7 +8,6 @@ using g = SFML.Graphics;
 using a = SFML.Audio;
 using w = SFML.Window;
 using s = SFML.System;
-using sus = System;
 using System.Threading;
 namespace Main
 {
@@ -20,10 +19,10 @@ namespace Main
         static List<line> lines = new List<line>();
         public static g.Text text = new g.Text();
         protected static g.Font font = new g.Font("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/ofont.ru_Impact.ttf");
-        static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
+        static int rank = 3/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 3/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
-        public static bool menu = true,settings=true;
+        public static bool menu = true,settings=false;
         public static int Main()
         {
             
@@ -250,13 +249,14 @@ namespace Main
             var window = (SFML.Window.Window)sender;
             if (e.Code == SFML.Window.Keyboard.Key.Escape)
             {
-                if(menu)
+                if(menu & !settings)
                 window.Close();
                 if (!menu & !settings)
                 {
                     menu = true;
                     sighs.Clear();
                     player_win = 0;
+                    player = 1;
                 }
                 if(settings)
                 {

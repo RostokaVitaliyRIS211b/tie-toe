@@ -118,7 +118,7 @@ namespace Main
             {
                 foreach (HPolzynok polzynok in polzynoks)
                 {
-                    if (polzynok.contains(w.Mouse.GetPosition(window)))
+                    if (polzynok.contains(w.Mouse.GetPosition(window)) & w.Mouse.IsButtonPressed(w.Mouse.Button.Left))
                     {
                         polzynok.move(w.Mouse.GetPosition(window).X);
                         break;

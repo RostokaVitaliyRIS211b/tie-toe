@@ -17,6 +17,9 @@ namespace Main
         public static List<Sigh> sighs = new List<Sigh>();
         public static List<Textbox> textboxes = new List<Textbox>();
         public static List<HPolzynok> polzynoks = new List<HPolzynok>();
+        static List<line> lines = new List<line>();
+        public static g.Text text = new g.Text();
+        protected static g.Font font = new g.Font("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/ofont.ru_Impact.ttf");
         static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
@@ -25,7 +28,7 @@ namespace Main
         {
             
             //s.Vector2i mouse_pos = new s.Vector2i();
-            List<line> lines = new List<line>();
+            
             Textbox textbox = new Textbox();
             textbox.set_size_text(32);
             textbox.set_string("START");
@@ -60,7 +63,14 @@ namespace Main
             pol.set_Fillcolor_act(new g.Color(0, 162, 232));
             pol.set_Outline_thickness_act(2);
             pol.set_outline_color_act(g.Color.Black);
+            pol.change_val_func(test_val);
             polzynoks.Add(pol);
+            text.FillColor = g.Color.Black;
+            text.CharacterSize = 32;
+            text.DisplayedString = "Count of win = " + count_of_win.ToString();
+            text.Font = font;
+            text.Origin = new s.Vector2f(text.GetGlobalBounds().Width / 2f, text.GetGlobalBounds().Height / 2f + text.CharacterSize / 6f);
+            text.Position = new s.Vector2f(300, 240);
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             MainWindow.KeyPressed += Window_KeyPressed;// запрягаем делегатов
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
@@ -82,6 +92,7 @@ namespace Main
                     {
                         foreach (HPolzynok polzynok in polzynoks)
                             MainWindow.Draw(polzynok);
+                        MainWindow.Draw(text);
                     }
                     MainWindow.Display();
                 }
@@ -121,16 +132,25 @@ namespace Main
                     if (polzynok.contains(w.Mouse.GetPosition(window)) & w.Mouse.IsButtonPressed(w.Mouse.Button.Left))
                     {
                         polzynok.move(w.Mouse.GetPosition(window).X);
+                        count_of_win = polzynok.get_value();
+                        text.DisplayedString = "Count of win = " + count_of_win.ToString();
                         break;
                     }
                 }
             }
         }
 
-        //private static float test(float x)
-        //{
-        //    return x;
-        //}
+        private static int test_val(float x)
+        {
+            int count = 0;
+            if (x >= 200 & x < 300)
+                count = 3;
+            else if (x >= 300 & x < 370)
+                count = 4;
+            else if (x >= 370)
+                count = 5;
+            return count;
+        }
         private static void create_lines(int width_screen, int height_screen,out List<line> lines,int side_of_cell)
         {
             lines=new List<line>();
@@ -155,10 +175,6 @@ namespace Main
                 lines.Add(line1);
             }
         }
-        private static void Main_Window_MouseMoved(object sender, w.MouseMoveEvent e)
-        {
-
-        }
         private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)// обработка событий мыши
         { 
            var window = (SFML.Window.Window)sender;
@@ -171,7 +187,17 @@ namespace Main
                         if (textbox.contains(w.Mouse.GetPosition(window)) & e.Button == w.Mouse.Button.Left)
                         {
                             if (textbox.get_string() == "START")
+                            {
                                 menu = false;
+                                if (count_of_win == 3)
+                                    rank = 3;
+                                if (count_of_win == 4)
+                                    rank = 8;
+                                if (count_of_win == 5)
+                                    rank = 10;
+                                side_of_cell = width_screen / rank;
+                                create_lines(width_screen, height_screen, out lines, side_of_cell);
+                            }
                             if (textbox.get_string() == "SETTINGS")
                                 settings = true;
                             if (textbox.get_string() == "EXIT")
@@ -224,7 +250,20 @@ namespace Main
             var window = (SFML.Window.Window)sender;
             if (e.Code == SFML.Window.Keyboard.Key.Escape)
             {
+                if(menu)
                 window.Close();
+                if (!menu & !settings)
+                {
+                    menu = true;
+                    sighs.Clear();
+                    player_win = 0;
+                }
+                if(settings)
+                {
+                    menu = true;
+                    settings = false;
+                }
+                    
             }
         }
         private delegate void win_player(Sigh sighc, ref int player);

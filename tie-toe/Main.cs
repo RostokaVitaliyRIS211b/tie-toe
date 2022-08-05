@@ -14,6 +14,7 @@ namespace Main
     public class Program
     {
         public static List<Sigh> sighs = new List<Sigh>();
+        public static List<Sigh> act_sighs = new List<Sigh>();
         public static List<Textbox> textboxes = new List<Textbox>();
         public static List<HPolzynok> polzynoks = new List<HPolzynok>();
         static List<line> lines = new List<line>();
@@ -242,6 +243,13 @@ namespace Main
 
                 }
                 player_win = is_win();
+                if(player_win!=0)
+                    foreach(Sigh sigh in act_sighs)
+                        if(sigh.player == 1)
+                            sigh.sprite.Texture = new g.Texture(new g.Image("cross_act.png"));
+                        else
+                            sigh.sprite.Texture = new g.Texture(new g.Image("circle_act.png"));
+                act_sighs.Clear();
             }
         }
         private static void Window_KeyPressed(object sender, SFML.Window.KeyEventArgs e)// обработка событий клавиатуры
@@ -295,10 +303,16 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();// позиция искомого знака
             pos = sighc.sprite.Position;
+            act_sighs.Clear();
             for (int i=0;i<count_of_win & player == 0;++i)
             {
-                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)// ищем знаки распологающийся сверху справа по диагонали от текущего знака(крестика или нолика)
+                Sigh opa = sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player);
+                if (opa != null)// ищем знаки распологающийся сверху справа по диагонали от текущего знака(крестика или нолика)
+                {
                     ++count_of_finds;
+                    act_sighs.Add(opa);
+                }
+                    
                 pos.X += difference;
                 pos.Y -= difference;
             }
@@ -312,14 +326,23 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win & player == 0; ++i)
+            if(act_sighs.Count!=count_of_win)
             {
-                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player==sighc.player) != null)
-                    ++count_of_finds;
-                pos.Y -= difference;
+                act_sighs.Clear();
+                for (int i = 0; i < count_of_win & player == 0; ++i)
+                {
+                    Sigh opa = sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player);
+                    if (opa != null)
+                    {
+                        ++count_of_finds;
+                        act_sighs.Add(opa);
+                    }
+                    pos.Y -= difference;
+                }
+                if (count_of_finds == count_of_win)
+                    player = sighc.player;
             }
-            if (count_of_finds == count_of_win)
-                player = sighc.player;
+           
             //Console.WriteLine("compare2 {0}", player);
         }
         private static void compare3(Sigh sighc, ref int player)// ищем знаки слева сверху по диагонали
@@ -327,15 +350,24 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win & player == 0; ++i)
+            if (act_sighs.Count != count_of_win)
             {
-                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)
-                    ++count_of_finds;
-                pos.X -= difference;
-                pos.Y -= difference;
+                act_sighs.Clear();
+                for (int i = 0; i < count_of_win & player == 0; ++i)
+                {
+                    Sigh opa = sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player);
+                    if (opa != null)
+                    {
+                        ++count_of_finds;
+                        act_sighs.Add(opa);
+                    }
+                    pos.X -= difference;
+                    pos.Y -= difference;
+                }
+                if (count_of_finds == count_of_win)
+                    player = sighc.player;
             }
-            if (count_of_finds == count_of_win)
-                player = sighc.player;
+           
             //Console.WriteLine("compare3 {0}", player);
         }
         private static void compare4(Sigh sighc, ref int player)// ищем знаки слева от текущего
@@ -343,14 +375,23 @@ namespace Main
             int count_of_finds = 0, difference = side_of_cell;
             s.Vector2f pos = new s.Vector2f();
             pos = sighc.sprite.Position;
-            for (int i = 0; i < count_of_win & player == 0; ++i)
+            if (act_sighs.Count != count_of_win)
             {
-                if (sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player) != null)
-                    ++count_of_finds;
-                pos.X -= difference;
+                act_sighs.Clear();
+                for (int i = 0; i < count_of_win & player == 0; ++i)
+                {
+                    Sigh opa = sighs.Find(sigh => sigh.sprite.Position == pos & sigh.player == sighc.player);
+                    if (opa != null)
+                    {
+                        ++count_of_finds;
+                        act_sighs.Add(opa);
+                    }
+                    pos.X -= difference;
+                }
+                if (count_of_finds == count_of_win)
+                    player = sighc.player;
             }
-            if (count_of_finds == count_of_win)
-                player = sighc.player;
+           
             //Console.WriteLine("compare4 {0}", player);
         }
 

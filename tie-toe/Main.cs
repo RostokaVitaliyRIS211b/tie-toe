@@ -226,9 +226,9 @@ namespace Main
                     Sigh sigh = new Sigh();
                     sigh.player = player;
                     if (player == 1)
-                        sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/cross.png");
+                        sigh.img = new g.Image("cross.png");
                     else
-                        sigh.img = new g.Image("C:/Users/Динозавр/source/repos/tie-toe/tie-toe/circle.png");
+                        sigh.img = new g.Image("circle.png");
                     sigh.texture = new g.Texture(sigh.img);
                     sigh.sprite = new g.Sprite(sigh.texture)
                     {

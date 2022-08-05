@@ -20,7 +20,7 @@ namespace Main
         static int rank = 10/*количетво ячеек стороны квадартного игрового поля */, width_screen = 600, height_screen = 600, count_of_win = 5/*количество знаков в ряд нужное для победы */,player_win=0;
         static int side_of_cell = width_screen / rank/* размер одной клетки игрового поля*/;
         public static int player = 1;
-        public static bool menu = false,settings=true;
+        public static bool menu = true,settings=true;
         public static int Main()
         {
             
@@ -64,6 +64,7 @@ namespace Main
             g.RenderWindow MainWindow = new g.RenderWindow(new w.VideoMode((uint)width_screen, (uint)height_screen), "Tie-Toe");
             MainWindow.KeyPressed += Window_KeyPressed;// запрягаем делегатов
             MainWindow.MouseButtonPressed += MainWindow_MouseButtonPressed;
+            MainWindow.MouseMoved += MainWindow_MouseMoved;
             create_lines(width_screen,height_screen,out lines,side_of_cell);
             while (MainWindow.IsOpen)
             {
@@ -95,7 +96,7 @@ namespace Main
                     MainWindow.Display();
                     if (sighs.Count == rank * rank | player_win != 0)
                     {
-                        Thread.Sleep(1500);
+                        Thread.Sleep(1500);// надо добавить подстветку тех когда выигрывает чел
                         //sus.Console.WriteLine("gay");
                         sighs.Clear();
                         player_win = 0;
@@ -109,10 +110,27 @@ namespace Main
             //Console.ReadKey();
             return 0;
         }
-        private static float test(float x)
+
+        private static void MainWindow_MouseMoved(object sender, w.MouseMoveEventArgs e)
         {
-            return x;
+            var window = (SFML.Window.Window)sender;
+            if (settings)
+            {
+                foreach (HPolzynok polzynok in polzynoks)
+                {
+                    if (polzynok.contains(w.Mouse.GetPosition(window)))
+                    {
+                        polzynok.move(w.Mouse.GetPosition(window).X);
+                        break;
+                    }
+                }
+            }
         }
+
+        //private static float test(float x)
+        //{
+        //    return x;
+        //}
         private static void create_lines(int width_screen, int height_screen,out List<line> lines,int side_of_cell)
         {
             lines=new List<line>();
@@ -137,19 +155,25 @@ namespace Main
                 lines.Add(line1);
             }
         }
+        private static void Main_Window_MouseMoved(object sender, w.MouseMoveEvent e)
+        {
+
+        }
         private static void MainWindow_MouseButtonPressed(object sender, w.MouseButtonEventArgs e)// обработка событий мыши
         { 
            var window = (SFML.Window.Window)sender;
-            if(menu & e.Button==w.Mouse.Button.Left)
+            if(menu)
             {
                 if(!settings)
                 {
                     foreach (Textbox textbox in textboxes)
                     {
-                        if (textbox.contains(w.Mouse.GetPosition(window)))
+                        if (textbox.contains(w.Mouse.GetPosition(window)) & e.Button == w.Mouse.Button.Left)
                         {
                             if (textbox.get_string() == "START")
                                 menu = false;
+                            if (textbox.get_string() == "SETTINGS")
+                                settings = true;
                             if (textbox.get_string() == "EXIT")
                                 window.Close();
                             break;
@@ -159,8 +183,14 @@ namespace Main
                 }
                 else
                 {
-                    foreach (HPolzynok polzynok in polzynoks)
-                        polzynok.change_func(test);
+                   foreach(HPolzynok polzynok in polzynoks)
+                   {
+                        if(polzynok.contains(w.Mouse.GetPosition(window))&(e.Button == w.Mouse.Button.Left))
+                        {
+                            polzynok.move(w.Mouse.GetPosition(window).X);
+                            break;
+                        }
+                   }
                 }
                
             }

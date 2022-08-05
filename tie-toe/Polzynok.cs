@@ -13,11 +13,18 @@ namespace Polzet
         protected g.CircleShape active;
         protected int value;
         protected delegate float coord(float x);
+        protected delegate int val(float x);
         protected coord mvf;
+        protected val v;
         protected float standart_func(float x)
         {
-            return x >= rect.Position.X-rect.Size.X/2 & x <= rect.Position.X+rect.Size.X/2 ? x : rect.Position.X - rect.Size.X / 2;
+            return x >= rect.Position.X-rect.Size.X/2 & x <= rect.Position.X+rect.Size.X/2 ? x : active.Position.X;
         }
+        protected int vl(float x)
+        {
+            return (int)(x-rect.Position.X);
+        }
+
 
         public HPolzynok()
         {
@@ -28,6 +35,7 @@ namespace Polzet
             p1 = new g.RectangleShape();
             active = new g.CircleShape();
             mvf += standart_func;
+            v += vl;
             value = 0;
         }
         public void set_Fill_color_rect(g.Color color)
@@ -103,7 +111,20 @@ namespace Polzet
         }
         public void move(float x)
         {
-           
+            active.Position=new s.Vector2f(mvf(x),active.Position.Y);
+            value = v(mvf(x));
+        }
+        public bool contains(s.Vector2i pos)
+        {
+            return rect.GetGlobalBounds().Contains(pos.X, pos.Y) | active.GetGlobalBounds().Contains(pos.X,pos.Y);
+        }
+        public bool contains(s.Vector2f pos)
+        {
+            return rect.GetGlobalBounds().Contains(pos.X, pos.Y) | active.GetGlobalBounds().Contains(pos.X, pos.Y);
+        }
+        public bool contains(float X,float Y)
+        {
+            return rect.GetGlobalBounds().Contains(X, Y) | active.GetGlobalBounds().Contains(X, Y);
         }
         public void Draw(g.RenderTarget target, g.RenderStates states)
         {
